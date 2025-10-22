@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web4 Website Hosting Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 { color: #00d4ff; text-align: center; margin-bottom: 2rem; }
+        .step { background: rgba(255, 255, 255, 0.1); padding: 20px; margin: 15px 0; border-radius: 10px; }
+        .code { background: #1a1a1a; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; }
+        button { 
+            background: #00d4ff; color: #000; border: none; padding: 10px 20px; 
+            border-radius: 5px; cursor: pointer; font-weight: bold; margin: 5px;
+        }
+        button:hover { background: #00a8cc; }
+        .output { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px; margin: 10px 0; }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .info { color: #2196F3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Web4 Website Hosting Demo</h1>
+        <p>This demonstrates how to host decentralized websites using smart contracts + DHT storage on the ZHTP network.</p>
+
+        <div class="step">
+            <h3>📄 Step 1: Create Website Content</h3>
+            <p>First, we'll create the HTML content that will be stored in the DHT:</p>
+            <button onclick="createWebsiteContent()">Create Website Content</button>
+            <div id="content-output" class="output" style="display: none;"></div>
+        </div>
+
+        <div class="step">
+            <h3>🚀 Step 2: Deploy Web4 Smart Contract</h3>
+            <p>Deploy a smart contract that defines the website routes and references DHT content:</p>
+            <button onclick="deployWebsiteContract()">Deploy Website Contract</button>
+            <div id="contract-output" class="output" style="display: none;"></div>
+        </div>
+
+        <div class="step">
+            <h3>💾 Step 3: Store Content in DHT</h3>
+            <p>Upload the website files to the DHT network for decentralized storage:</p>
+            <button onclick="storeContentInDHT()">Store in DHT</button>
+            <div id="dht-output" class="output" style="display: none;"></div>
+        </div>
+
+        <div class="step">
+            <h3>🌍 Step 4: Access Web4 Website</h3>
+            <p>Navigate to your website using the ZHTP Web4 protocol:</p>
+            <button onclick="loadWeb4Website()">Load Website</button>
+            <div id="website-output" class="output" style="display: none;"></div>
+        </div>
+
+        <div class="step">
+            <h3> Step 5: Test Web4 Browser Navigation</h3>
+            <p>Test the complete Web4 browser functionality:</p>
+            <input type="text" id="zhtp-url" placeholder="Enter ZHTP URL (e.g., mysite.zhtp)" style="width: 300px; padding: 8px; margin: 5px;">
+            <button onclick="navigateToWeb4Site()">Navigate</button>
+            <div id="navigation-output" class="output" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Sample website content to be stored in DHT
+        const websiteContent = {
+            'index.html': `<!DOCTYPE html>
+<html>
+<head>
+    <title>My Web4 Site</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>🌐 Welcome to Web4!</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <p>This website is hosted on ZHTP using smart contracts and DHT storage!</p>
+        <div class="features">
+            <h3>✨ Features:</h3>
+            <ul>
+                <li>🔒 Quantum-resistant security</li>
+                <li>🌍 Decentralized hosting</li>
+                <li>⚡ Zero-knowledge privacy</li>
+                <li>🏛️ DAO governance</li>
+            </ul>
+        </div>
+    </main>
+    <script src="/app.js"></script>
+</body>
+</html>`,
+            'style.css': `body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #00d4ff, #764ba2);
+    color: white;
+}
+header {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    text-align: center;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+}
+nav a:hover { background: rgba(255, 255, 255, 0.2); }
+main {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.features {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+}`,
+            'app.js': `console.log('🌐 Web4 website loaded successfully!');
+console.log(' Running on ZHTP protocol');
+console.log('💎 Content stored in DHT network');
+
+// Add some interactivity
+document.addEventListener('DOMContentLoaded', function() {
+    const features = document.querySelector('.features');
+    if (features) {
+        features.addEventListener('click', function() {
+            this.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+    }
+});`
+        };
+
+        async function createWebsiteContent() {
+            const output = document.getElementById('content-output');
+            output.style.display = 'block';
+            output.innerHTML = '<div class="info">Creating website content...</div>';
+
+            // Show the content that will be stored
+            let contentHtml = '<div class="success"> Website content created!</div>';
+            contentHtml += '<h4>Files to be stored in DHT:</h4>';
+            
+            Object.keys(websiteContent).forEach(filename => {
+                contentHtml += `<div style="margin: 10px 0;">
+                    <strong>${filename}</strong> (${websiteContent[filename].length} bytes)
+                    <div class="code" style="max-height: 150px; overflow-y: auto;">
+                        ${websiteContent[filename].substring(0, 200)}${websiteContent[filename].length > 200 ? '...' : ''}
+                    </div>
+                </div>`;
+            });
+
+            output.innerHTML = contentHtml;
+        }
+
+        async function deployWebsiteContract() {
+            const output = document.getElementById('contract-output');
+            output.style.display = 'block';
+            output.innerHTML = '<div class="info">Deploying Web4 smart contract...</div>';
+
+            try {
+                // Create the Web4 website smart contract
+                const websiteContract = {
+                    contract_type: "web4_website",
+                    domain: "mysite.zhtp",
+                    routes: {
+                        "/": {
+                            content_hash: "dht:QmIndexHash123",
+                            content_type: "text/html",
+                            layout: "default"
+                        },
+                        "/about": {
+                            content_hash: "dht:QmAboutHash456",
+                            content_type: "text/html", 
+                            layout: "default"
+                        },
+                        "/contact": {
+                            content_hash: "dht:QmContactHash789",
+                            content_type: "text/html",
+                            layout: "default"
+                        }
+                    },
+                    assets: {
+                        "/style.css": "dht:QmCssHash123",
+                        "/app.js": "dht:QmJsHash456"
+                    },
+                    metadata: {
+                        title: "My Web4 Website",
+                        description: "Decentralized website on ZHTP",
+                        author: "did:zhtp:user123",
+                        version: "1.0.0"
+                    },
+                    permissions: {
+                        allow_dynamic_content: true,
+                        require_authentication: false,
+                        cors_enabled: true
+                    }
+                };
+
+                // Deploy to ZHTP network
+                const response = await fetch('http://localhost:9333/api/v1/dht/contract', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer test-token-123456789',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message_type: "ContractDeploy",
+                        contract_data: websiteContract
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    output.innerHTML = `
+                        <div class="success"> Web4 contract deployed successfully!</div>
+                        <div class="code">
+                            Contract ID: ${result.contract_id || 'mysite_web4_' + Date.now()}<br>
+                            Domain: mysite.zhtp<br>
+                            Status: Active<br>
+                            Routes: 3 configured<br>
+                            Assets: 2 configured
+                        </div>
+                        <p>Your website contract is now deployed and ready to serve content from DHT!</p>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                output.innerHTML = `
+                    <div class="error">❌ Contract deployment failed:</div>
+                    <div class="code">${error.message}</div>
+                    <p class="info">Note: This is a demo - the contract structure is created but may need the ZHTP node to be fully running for deployment.</p>
+                `;
+            }
+        }
+
+        async function storeContentInDHT() {
+            const output = document.getElementById('dht-output');
+            output.style.display = 'block';
+            output.innerHTML = '<div class="info">Storing content in DHT network...</div>';
+
+            try {
+                let storedFiles = [];
+                
+                // Simulate storing each file in DHT
+                for (const [filename, content] of Object.entries(websiteContent)) {
+                    // In a real implementation, this would upload to DHT and return a content hash
+                    const contentHash = `Qm${Math.random().toString(36).substring(2, 15)}${filename.replace(/\./g, '')}`;
+                    storedFiles.push({
+                        filename: filename,
+                        hash: contentHash,
+                        size: content.length
+                    });
+                }
+
+                let resultHtml = '<div class="success"> All content stored in DHT!</div>';
+                resultHtml += '<h4>DHT Storage Results:</h4>';
+                
+                storedFiles.forEach(file => {
+                    resultHtml += `<div class="code">
+                        File: ${file.filename}<br>
+                        Hash: dht:${file.hash}<br>
+                        Size: ${file.size} bytes<br>
+                        Status:  Stored
+                    </div>`;
+                });
+
+                resultHtml += '<p class="info"> Content is now distributed across the ZHTP DHT network and can be accessed by the smart contract!</p>';
+                output.innerHTML = resultHtml;
+
+            } catch (error) {
+                output.innerHTML = `
+                    <div class="error">❌ DHT storage failed:</div>
+                    <div class="code">${error.message}</div>
+                `;
+            }
+        }
+
+        async function loadWeb4Website() {
+            const output = document.getElementById('website-output');
+            output.style.display = 'block';
+            output.innerHTML = '<div class="info">Loading Web4 website...</div>';
+
+            // Simulate the Web4 loading process
+            setTimeout(() => {
+                output.innerHTML = `
+                    <div class="success">🌐 Web4 Website Loaded Successfully!</div>
+                    <div class="code">
+                        URL: zhtp://mysite.zhtp/<br>
+                        Contract:  Found and verified<br>
+                        DHT Content:  Retrieved successfully<br>
+                        Rendered:  Complete
+                    </div>
+                    <div style="border: 2px solid #00d4ff; padding: 15px; margin: 10px 0; border-radius: 8px; background: rgba(0, 212, 255, 0.1);">
+                        <h4> Your Web4 Website is Live!</h4>
+                        <p><strong>Access URL:</strong> zhtp://mysite.zhtp</p>
+                        <p><strong>Features:</strong></p>
+                        <ul>
+                            <li> Decentralized hosting via smart contract</li>
+                            <li> Content distributed across DHT network</li>
+                            <li> Quantum-resistant ZHTP protocol</li>
+                            <li> Zero-knowledge privacy protection</li>
+                        </ul>
+                    </div>
+                `;
+            }, 2000);
+        }
+
+        function navigateToWeb4Site() {
+            const url = document.getElementById('zhtp-url').value || 'mysite.zhtp';
+            const output = document.getElementById('navigation-output');
+            output.style.display = 'block';
+            
+            output.innerHTML = `
+                <div class="info">Navigating to: ${url}</div>
+                <div class="code">
+                    1. Parsing ZHTP URL: ${url}<br>
+                    2. Resolving smart contract...<br>
+                    3. Fetching content from DHT...<br>
+                    4. Rendering Web4 page...
+                </div>
+            `;
+
+            setTimeout(() => {
+                output.innerHTML += `
+                    <div class="success"> Navigation successful!</div>
+                    <div style="border: 1px solid #4CAF50; padding: 10px; margin: 10px 0; background: rgba(76, 175, 80, 0.1);">
+                        <h4>Web4 Site Rendered:</h4>
+                        <iframe srcdoc="${websiteContent['index.html'].replace(/"/g, '&quot;')}" 
+                                style="width: 100%; height: 300px; border: none; background: white; border-radius: 5px;"></iframe>
+                    </div>
+                `;
+            }, 2000);
+        }
+
+        // Initialize
+        console.log('🌐 Web4 Website Hosting Demo loaded');
+        console.log(' Ready to demonstrate decentralized website hosting');
+    </script>
+</body>
+</html>

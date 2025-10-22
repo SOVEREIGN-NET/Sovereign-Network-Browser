@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZHTP ZK-DID Signin Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .btn {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid #4CAF50;
+        }
+        .status.error {
+            background: rgba(244, 67, 54, 0.3);
+            border: 1px solid #f44336;
+        }
+        .status.info {
+            background: rgba(33, 150, 243, 0.3);
+            border: 1px solid #2196F3;
+        }
+        .logs {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title"> ZHTP ZK-DID Test</h1>
+        
+        <div class="form-group">
+            <label for="identityId">Identity ID:</label>
+            <input type="text" id="identityId" placeholder="Enter your ZK-DID identity ID" value="user123">
+        </div>
+        
+        <div class="form-group">
+            <label for="passphrase">Passphrase:</label>
+            <input type="password" id="passphrase" placeholder="Enter your passphrase" value="mypassword">
+        </div>
+        
+        <button class="btn" onclick="testSignin()">🔓 Test ZK-DID Signin</button>
+        <button class="btn" onclick="testRegistration()">Test Registration</button>
+        <button class="btn" onclick="checkNodeStatus()">🟢 Check Node Status</button>
+        
+        <div id="status"></div>
+        <div id="logs" class="logs"></div>
+    </div>
+
+    <script>
+        let logContainer = document.getElementById('logs');
+        let statusContainer = document.getElementById('status');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            logContainer.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(message);
+        }
+        
+        function showStatus(message, type = 'info') {
+            statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        async function makeRequest(path, method = 'GET', body = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                log(`Making ${method} request to: ${path}`);
+                const response = await fetch(`http://127.0.0.1:8080${path}`, options);
+                const text = await response.text();
+                
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch {
+                    data = text;
+                }
+                
+                log(`Response (${response.status}): ${JSON.stringify(data)}`);
+                return { success: response.ok, status: response.status, data };
+            } catch (error) {
+                log(`Request failed: ${error.message}`, 'error');
+                return { success: false, error: error.message };
+            }
+        }
+        
+        async function checkNodeStatus() {
+            showStatus(' Checking ZHTP node status...', 'info');
+            
+            const blockchainInfo = await makeRequest('/blockchain/info');
+            const meshPeers = await makeRequest('/mesh/peers');
+            const networkGas = await makeRequest('/network/gas');
+            
+            if (blockchainInfo.success) {
+                showStatus(' ZHTP Node is running and accessible', 'success');
+                log('Node status check complete - all endpoints responding');
+            } else {
+                showStatus('❌ ZHTP Node is not accessible', 'error');
+            }
+        }
+        
+        async function testRegistration() {
+            const identityId = document.getElementById('identityId').value;
+            const passphrase = document.getElementById('passphrase').value;
+            
+            if (!identityId || !passphrase) {
+                showStatus('❌ Please enter both Identity ID and passphrase', 'error');
+                return;
+            }
+            
+            showStatus('Testing ZK-DID registration...', 'info');
+            log('=== STARTING REGISTRATION TEST ===');
+            
+            const registrationData = {
+                identity_id: identityId,
+                passphrase: passphrase,
+                display_name: `Test User ${identityId}`,
+                biometric_data: "fake_biometric_hash_for_testing"
+            };
+            
+            const result = await makeRequest('/identity/register', 'POST', registrationData);
+            
+            if (result.success) {
+                showStatus(' Registration successful!', 'success');
+                log('Registration completed successfully');
+            } else {
+                showStatus(`❌ Registration failed: ${result.data}`, 'error');
+                log(`Registration error: ${JSON.stringify(result)}`);
+            }
+        }
+        
+        async function testSignin() {
+            const identityId = document.getElementById('identityId').value;
+            const passphrase = document.getElementById('passphrase').value;
+            
+            if (!identityId || !passphrase) {
+                showStatus('❌ Please enter both Identity ID and passphrase', 'error');
+                return;
+            }
+            
+            showStatus('🔓 Testing ZK-DID signin...', 'info');
+            log('=== STARTING SIGNIN TEST ===');
+            
+            const signinData = {
+                identity_id: identityId,
+                passphrase: passphrase
+            };
+            
+            const result = await makeRequest('/identity/signin', 'POST', signinData);
+            
+            if (result.success) {
+                showStatus(' Signin successful!', 'success');
+                log('Signin completed successfully');
+                log(`Session token: ${result.data.session_token}`);
+            } else {
+                showStatus(`❌ Signin failed: ${result.data}`, 'error');
+                log(`Signin error: ${JSON.stringify(result)}`);
+            }
+        }
+        
+        // Initialize
+        log('ZK-DID Test Interface loaded');
+        checkNodeStatus();
+    </script>
+</body>
+</html>

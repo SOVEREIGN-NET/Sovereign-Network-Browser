@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHT Integration Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: #1a1f35; 
+            color: white;
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            border: 1px solid #444; 
+            border-radius: 8px;
+        }
+        button { 
+            padding: 10px 20px; 
+            margin: 10px; 
+            background: #00d4ff; 
+            color: black; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer;
+        }
+        button:hover { background: #00a8cc; }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .info { color: #2196F3; }
+    </style>
+</head>
+<body>
+    <h1> DHT Integration Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Import Verification</h2>
+        <button onclick="testImports()">Test Imports</button>
+        <div id="importResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: DHT URL Utils</h2>
+        <button onclick="testUrlUtils()">Test URL Utilities</button>
+        <div id="urlResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: DHT Testing Dashboard</h2>
+        <button onclick="testDashboard()">Test Dashboard</button>
+        <div id="dashboardResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 4: Global Functions</h2>
+        <button onclick="testGlobalFunctions()">Test Global Functions</button>
+        <div id="globalResults"></div>
+    </div>
+
+    <script type="module">
+        import ZhtpUrlUtils from './src/utils/zhtp-url-utils.js';
+        import DhtTestingDashboard from './src/utils/dht-testing-dashboard.js';
+
+        // Make available globally for testing
+        window.ZhtpUrlUtils = ZhtpUrlUtils;
+        window.DhtTestingDashboard = DhtTestingDashboard;
+
+        window.testImports = function() {
+            const results = document.getElementById('importResults');
+            try {
+                if (typeof ZhtpUrlUtils !== 'undefined' && typeof DhtTestingDashboard !== 'undefined') {
+                    results.innerHTML = '<p class="success"> All imports successful!</p>';
+                } else {
+                    results.innerHTML = '<p class="error">❌ Import failed</p>';
+                }
+            } catch (error) {
+                results.innerHTML = `<p class="error">❌ Import error: ${error.message}</p>`;
+            }
+        };
+
+        window.testUrlUtils = function() {
+            const results = document.getElementById('urlResults');
+            try {
+                const utils = new ZhtpUrlUtils();
+                const testUrl = 'zhtp://dao.network/treasury';
+                const parsed = utils.parseZhtpUrl(testUrl);
+                
+                results.innerHTML = `
+                    <p class="success"> URL Utils working!</p>
+                    <p class="info">Parsed URL: ${JSON.stringify(parsed, null, 2)}</p>
+                `;
+            } catch (error) {
+                results.innerHTML = `<p class="error">❌ URL Utils error: ${error.message}</p>`;
+            }
+        };
+
+        window.testDashboard = function() {
+            const results = document.getElementById('dashboardResults');
+            try {
+                const mockBrowser = { 
+                    showNotification: (msg) => console.log('Notification:', msg),
+                    getCurrentUrl: () => 'zhtp://test.network'
+                };
+                const dashboard = new DhtTestingDashboard(mockBrowser);
+                
+                results.innerHTML = `
+                    <p class="success"> Dashboard created successfully!</p>
+                    <p class="info">Dashboard methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(dashboard)).join(', ')}</p>
+                `;
+            } catch (error) {
+                results.innerHTML = `<p class="error">❌ Dashboard error: ${error.message}</p>`;
+            }
+        };
+
+        window.testGlobalFunctions = function() {
+            const results = document.getElementById('globalResults');
+            const tests = [];
+
+            // Test if global functions exist
+            if (typeof window.openDhtTesting === 'function') {
+                tests.push(' openDhtTesting function exists');
+            } else {
+                tests.push('❌ openDhtTesting function missing');
+            }
+
+            if (typeof window.openSettings === 'function') {
+                tests.push(' openSettings function exists');
+            } else {
+                tests.push('❌ openSettings function missing');
+            }
+
+            results.innerHTML = `<div>${tests.join('<br>')}</div>`;
+        };
+
+        // Auto-run all tests
+        setTimeout(() => {
+            testImports();
+            testUrlUtils();
+            testDashboard();
+            testGlobalFunctions();
+        }, 100);
+    </script>
+</body>
+</html>

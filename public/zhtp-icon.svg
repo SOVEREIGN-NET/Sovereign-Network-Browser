@@ -1,0 +1,39 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#grad1)" stroke="url(#grad2)" stroke-width="2"/>
+  
+  <!-- ZHTP Symbol -->
+  <g transform="translate(16, 16)">
+    <!-- Z shape -->
+    <path d="M4 8 L16 8 L4 24 L16 24" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    
+    <!-- Quantum dots -->
+    <circle cx="8" cy="4" r="1.5" fill="#00d4ff"/>
+    <circle cx="12" cy="12" r="1.5" fill="#ff00d4"/>
+    <circle cx="8" cy="20" r="1.5" fill="#d4ff00"/>
+    <circle cx="4" cy="28" r="1.5" fill="#00d4ff"/>
+    
+    <!-- Network lines -->
+    <path d="M8 4 L12 12 L8 20 L4 28" stroke="url(#grad3)" stroke-width="1" opacity="0.6"/>
+  </g>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1f35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d1b3d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0e1a;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff00d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4ff00;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#ff00d4;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+</svg>

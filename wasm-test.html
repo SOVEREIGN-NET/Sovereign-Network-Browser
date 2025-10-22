@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebAssembly Test</title>
+</head>
+<body>
+    <h1>WebAssembly Loading Test</h1>
+    <div id="output"></div>
+
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        function log(message) {
+            console.log(message);
+            output.innerHTML += message + '<br>';
+        }
+        
+        async function testWebAssembly() {
+            try {
+                log('Starting WebAssembly test...');
+                
+                // Import the WebAssembly module
+                const wasmModule = await import('./src/wasm-production/zhtp_core.js');
+                log(' WebAssembly module imported successfully');
+                
+                // Initialize WebAssembly
+                await wasmModule.default();
+                log(' WebAssembly module initialized');
+                
+                // Test basic functionality
+                const version = wasmModule.get_production_version();
+                log(' Version: ' + version);
+                
+                const capabilities = wasmModule.get_production_capabilities();
+                log(' Capabilities: ' + JSON.stringify(capabilities));
+                
+                log(' All tests passed!');
+                
+            } catch (error) {
+                log('❌ Error: ' + error.message);
+                console.error('Full error:', error);
+            }
+        }
+        
+        testWebAssembly();
+    </script>
+</body>
+</html>
