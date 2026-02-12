@@ -4098,6 +4098,14 @@
                         <p>Private encrypted communications</p>
                         <div class="card-status">whisper.zhtp</div>
                     </div>
+
+                    <!-- Ren AI Card -->
+                    <div class="dashboard-card" data-action="ren">
+                        <div class="card-icon">🤖</div>
+                        <h3>Ren AI</h3>
+                        <p>Your AI assistant for the Sovereign Network</p>
+                        <div class="card-status" id="renStatus">ren.zhtp</div>
+                    </div>
                 </div>
 
                 <!-- Network Status -->
@@ -4994,6 +5002,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Ren AI Modal -->
+    <div id="renModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 class="modal-title">Ren AI</h2>
+                <button class="close-btn" onclick="closeModal('renModal')">&times;</button>
+            </div>
+            <div id="renContent" style="height: 500px;">
+                <!-- Ren Chat Panel will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Ren Client Script -->
+    <script type="module" src="./src/ren/ren-client.js"></script>
 
     <!-- API Scripts -->
     <script type="module" src="./src/api/zhtp-api.js"></script>
