@@ -1495,9 +1495,37 @@ Examples:
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.style.display = 'flex';
-            console.log('📂 Modal opened:', modalId);
+            console.log('Modal opened:', modalId);
         } else {
-            console.warn('⚠️ Modal not found:', modalId);
+            console.warn('Modal not found:', modalId);
+        }
+    }
+
+    // Open Ren AI Chat
+    openRenChat() {
+        console.log('Opening Ren AI chat...');
+        
+        // Initialize Ren client if not already done
+        if (!window.renClient) {
+            window.renClient = new window.RenClient({
+                zkDidManager: this.zkdidManager
+            });
+        }
+        
+        // Initialize Ren panel if not already done
+        if (!window.renPanel) {
+            window.renPanel = new window.RenChatPanel({
+                client: window.renClient
+            });
+        }
+        
+        // Open the modal
+        this.openModal('renModal');
+        
+        // Render the chat panel into the modal content
+        const renContent = document.getElementById('renContent');
+        if (renContent && window.renPanel) {
+            window.renPanel.render(renContent);
         }
     }
 
@@ -1698,6 +1726,9 @@ Examples:
                 break;
             case 'whisper':
                 this.navigateToUrl('zhtp://whisper.zhtp');
+                break;
+            case 'ren':
+                this.openRenChat();
                 break;
             default:
                 console.log('Unknown action:', action);
