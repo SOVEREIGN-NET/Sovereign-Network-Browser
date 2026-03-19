@@ -71,12 +71,12 @@
             const results = document.getElementById('importResults');
             try {
                 if (typeof ZhtpUrlUtils !== 'undefined' && typeof DhtTestingDashboard !== 'undefined') {
-                    results.innerHTML = '<p class="success"> All imports successful!</p>';
+                    results.textContent = '<p class="success"> All imports successful!</p>';
                 } else {
-                    results.innerHTML = '<p class="error">❌ Import failed</p>';
+                    results.textContent = '<p class="error">❌ Import failed</p>';
                 }
             } catch (error) {
-                results.innerHTML = `<p class="error">❌ Import error: ${error.message}</p>`;
+                results.textContent = `<p class="error">❌ Import error: ${error.message}</p>`;
             }
         };
 
@@ -87,12 +87,12 @@
                 const testUrl = 'zhtp://dao.network/treasury';
                 const parsed = utils.parseZhtpUrl(testUrl);
                 
-                results.innerHTML = `
+                results.textContent = `
                     <p class="success"> URL Utils working!</p>
                     <p class="info">Parsed URL: ${JSON.stringify(parsed, null, 2)}</p>
                 `;
             } catch (error) {
-                results.innerHTML = `<p class="error">❌ URL Utils error: ${error.message}</p>`;
+                results.textContent = `<p class="error">❌ URL Utils error: ${error.message}</p>`;
             }
         };
 
@@ -105,12 +105,12 @@
                 };
                 const dashboard = new DhtTestingDashboard(mockBrowser);
                 
-                results.innerHTML = `
+                results.textContent = `
                     <p class="success"> Dashboard created successfully!</p>
                     <p class="info">Dashboard methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(dashboard)).join(', ')}</p>
                 `;
             } catch (error) {
-                results.innerHTML = `<p class="error">❌ Dashboard error: ${error.message}</p>`;
+                results.textContent = `<p class="error">❌ Dashboard error: ${error.message}</p>`;
             }
         };
 
@@ -131,7 +131,7 @@
                 tests.push('❌ openSettings function missing');
             }
 
-            results.innerHTML = `<div>${tests.join('<br>')}</div>`;
+            results.textContent = `<div>${tests.join('<br>')}</div>`;
         };
 
         // Auto-run all tests
