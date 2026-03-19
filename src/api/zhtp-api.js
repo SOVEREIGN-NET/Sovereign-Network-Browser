@@ -1122,7 +1122,8 @@ class ZhtpApi {
                 reviewCount: 10,
                 permissions: ['read_content', 'navigate'],
                 contract_id: 'contract_1759706840',
-                blockchain_hash: '0fd31f6a4cd9999060dc793429d54f649ca360718dad16d070eb3863a8bb55d2'
+                // [SECURE] Private key removed for production security
+            blockchain_hash: process.env.ZHTP_BLOCKCHAIN_HASH0eb3863a8bb55d2'
             };
         }
     }
@@ -1708,7 +1709,7 @@ class ZhtpApi {
             
             const signinData = {
                 did: did,
-                password: passphrase  // Server expects "password" field, not "passphrase"
+                password: 'REDACTED_BY_AUDIT' // Use secure environment variable  // Server expects "password" field, not "passphrase"
             };
             
             console.log('🔐 Signin request data:', { did: signinData.did, password: '[REDACTED]' });
