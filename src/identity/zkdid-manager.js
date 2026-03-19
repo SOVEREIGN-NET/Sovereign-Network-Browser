@@ -183,7 +183,8 @@ class ZkDidManager {
     async storeIdentitySecurely(identity) {
         // Encrypt sensitive data before storing
         const encryptedIdentity = await this.cryptoUtils.encryptIdentity(identity);
-        localStorage.setItem('zhtp_identity_encrypted', encryptedIdentity);
+        // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp_identity_encrypted', encryptedIdentity);
         
         // Store public parts separately for quick access
         const publicIdentity = {
@@ -193,7 +194,8 @@ class ZkDidManager {
             publicKey: identity.publicKey,
             created: identity.created
         };
-        localStorage.setItem('zhtp_identity_public', JSON.stringify(publicIdentity));
+        // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp_identity_public', JSON.stringify(publicIdentity));
     }
 
     async loadSavedIdentity() {
