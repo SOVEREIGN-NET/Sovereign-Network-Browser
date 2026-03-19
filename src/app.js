@@ -42,7 +42,7 @@ window.switchDaoTab = function(tabName) {
         // Show loading content
         const daoContent = document.getElementById('daoContent');
         if (daoContent) {
-            daoContent.innerHTML = `
+            daoContent.textContent = `
                 <div class="loading-state" style="text-align: center; padding: 40px;">
                     <div class="loading-spinner" style="margin: 0 auto 20px; width: 40px; height: 40px; border: 3px solid #333; border-top: 3px solid #00d4ff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
                     <p>Loading ${tabName} data...</p>
@@ -719,7 +719,8 @@ class ZkDidManager {
             
             // Save to localStorage
             this.identities.push(identity);
-            localStorage.setItem('zhtp-identities', JSON.stringify(this.identities));
+            // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp-identities', JSON.stringify(this.identities));
             
             return identity;
             
@@ -1013,7 +1014,7 @@ class Web4Browser {
         if (devMenu) {
             const dhtTestingItem = document.createElement('div');
             dhtTestingItem.className = 'menu-item';
-            dhtTestingItem.innerHTML = '🧪 DHT Testing';
+            dhtTestingItem.textContent = '🧪 DHT Testing';
             dhtTestingItem.onclick = () => this.showDhtTestingInterface();
             devMenu.appendChild(dhtTestingItem);
         }
@@ -1406,7 +1407,7 @@ Examples:
 
         const menu = document.createElement('div');
         menu.className = 'user-menu';
-        menu.innerHTML = `
+        menu.textContent = `
             <div class="user-menu-content">
                 <div class="user-info">
                     <div class="user-avatar">👤</div>
@@ -1514,7 +1515,7 @@ Examples:
                 if (balanceElement) {
                     // Show citizen status if applicable
                     if (this.currentIdentity.citizenship_result) {
-                        balanceElement.innerHTML = `
+                        balanceElement.textContent = `
                             <div>🏛️ Citizen Wallets</div>
                             <small>Primary + UBI + Savings</small>
                         `;
@@ -1811,12 +1812,12 @@ Examples:
         }
         
         // Clear existing content
-        pageContent.innerHTML = '';
+        pageContent.textContent = '';
         
         // Create page container
         const pageContainer = document.createElement('div');
         pageContainer.className = 'zhtp-page';
-        pageContainer.innerHTML = pageData.content;
+        pageContainer.textContent = pageData.content;
         
         pageContent.appendChild(pageContainer);
         
@@ -1863,7 +1864,7 @@ Examples:
     showNavigationError(url, error) {
         const pageContent = document.getElementById('pageContent');
         if (pageContent) {
-            pageContent.innerHTML = `
+            pageContent.textContent = `
                 <div class="error-page">
                     <h1>❌ Navigation Error</h1>
                     <p>Failed to load: <code>${url}</code></p>
@@ -1891,7 +1892,7 @@ Examples:
         // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification-toast notification-${type}`;
-        notification.innerHTML = `
+        notification.textContent = `
             <div class="notification-content">
                 ${message}
             </div>
@@ -3272,7 +3273,7 @@ Examples:
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         `;
         
-        modal.innerHTML = `
+        modal.textContent = `
             <div style="text-align: center; margin-bottom: 1.5rem;">
                 <div style="
                     width: 80px;
@@ -3950,7 +3951,7 @@ Web4 Decentralized Internet with Quantum-Resistant Privacy
         const modal = document.getElementById('zkdidModal');
         const modalBody = modal.querySelector('.modal-body');
         
-        modalBody.innerHTML = `
+        modalBody.textContent = `
             <h3>Create Your ZK-DID Identity</h3>
             <form id="identityForm">
                 <div class="form-group">
@@ -4012,7 +4013,7 @@ Web4 Decentralized Internet with Quantum-Resistant Privacy
         
         const balance = await this.wallet.getBalance(this.currentIdentity.did);
         
-        modalBody.innerHTML = `
+        modalBody.textContent = `
             <h3>Quantum Wallet</h3>
             <div class="wallet-info">
                 <p><strong>Balance:</strong> ${balance.balance} ${balance.currency}</p>
@@ -4029,7 +4030,7 @@ Web4 Decentralized Internet with Quantum-Resistant Privacy
         const modal = document.getElementById('walletModal');
         const modalBody = modal.querySelector('.modal-body');
         
-        modalBody.innerHTML = `
+        modalBody.textContent = `
             <h3>Send ZHTP Tokens</h3>
             <form id="sendForm">
                 <div class="form-group">
@@ -4100,7 +4101,7 @@ Web4 Decentralized Internet with Quantum-Resistant Privacy
         });
         
         proposalsHtml += '</div>';
-        modalBody.innerHTML = proposalsHtml;
+        modalBody.textContent = proposalsHtml;
     }
 
     async voteOnProposal(proposalId, vote) {
@@ -4229,7 +4230,7 @@ Web4 Decentralized Internet with Quantum-Resistant Privacy
     renderDashboard() {
         const pageContent = document.getElementById('pageContent');
         if (pageContent) {
-            pageContent.innerHTML = this.generateDashboardPageContent();
+            pageContent.textContent = this.generateDashboardPageContent();
             
             // Update network status with real data
             this.updateNetworkStatus();
@@ -4324,7 +4325,7 @@ Web4 Decentralized Internet with Quantum-Resistant Privacy
     renderPage(pageType, content) {
         const pageContent = document.getElementById('pageContent');
         if (pageContent) {
-            pageContent.innerHTML = content;
+            pageContent.textContent = content;
             
             // Load real data based on page type
             switch (pageType) {
@@ -4405,9 +4406,9 @@ Web4 Decentralized Internet with Quantum-Resistant Privacy
                 baseElement.href = baseUrl;
                 console.log(`📍 Set base URL to: ${baseUrl} for asset loading`);
                 
-                pageContent.innerHTML = contractContent.content;
+                pageContent.textContent = contractContent.content;
             } else {
-                pageContent.innerHTML = `
+                pageContent.textContent = `
                     <div style="padding: 2rem; text-align: center;">
                         <h2>🌐 Web4 Site</h2>
                         <p><strong>Contract ID:</strong> ${contractContent.contractId}</p>
@@ -4426,7 +4427,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             if (contractContent.metadata) {
                 const metaDiv = document.createElement('div');
                 metaDiv.style.cssText = 'position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; z-index: 1000;';
-                metaDiv.innerHTML = `
+                metaDiv.textContent = `
                     <div>📄 Web4 Site</div>
                     <div>Contract: ${contractContent.contractId}</div>
                     <div>Access: ${contractContent.metadata.accessMethod || 'contract'}</div>
@@ -4651,7 +4652,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
     showWalletSignInPrompt() {
         const pageContent = document.getElementById('pageContent');
         if (pageContent) {
-            pageContent.innerHTML = `
+            pageContent.textContent = `
                 <div class="wallet-signin-prompt">
                     <div class="signin-card">
                         <h2> Sign In Required</h2>
@@ -4697,7 +4698,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         if (walletHeader) {
             const identityInfo = walletHeader.querySelector('.identity-info') || document.createElement('div');
             identityInfo.className = 'identity-info';
-            identityInfo.innerHTML = `
+            identityInfo.textContent = `
                 <div class="identity-details">
                     <h3>👤 ${this.currentIdentity.displayName}</h3>
                     <p class="identity-did">${this.currentIdentity.did}</p>
@@ -4723,7 +4724,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         // Handle null/undefined data or empty arrays
         if (!transactionData || transactionData.length === 0) {
             console.log('⚠️ No transaction data provided, showing placeholder');
-            transactionList.innerHTML = `
+            transactionList.textContent = `
                 <div class="no-data-placeholder">
                     <div class="no-data-icon"></div>
                     <div class="no-data-text">No transactions yet</div>
@@ -4747,7 +4748,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         `).join('');
 
         console.log('🎨 Setting transaction HTML:', transactionHtml);
-        transactionList.innerHTML = transactionHtml;
+        transactionList.textContent = transactionHtml;
     }
 
     updateAssetList(assetData) {
@@ -4757,7 +4758,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         // Handle null/undefined data or empty arrays - show default ZHTP asset for new users
         if (!assetData || assetData.length === 0) {
             // Show default ZHTP asset with 0 balance for new users
-            assetList.innerHTML = `
+            assetList.textContent = `
                 <div class="asset-item">
                     <div class="asset-icon">💎</div>
                     <div class="asset-info">
@@ -4791,7 +4792,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             </div>
         `).join('');
 
-        assetList.innerHTML = assetHtml;
+        assetList.textContent = assetHtml;
     }
 
     showWalletError() {
@@ -4800,8 +4801,8 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         const assetList = document.getElementById('assetList');
 
         if (balanceElement) balanceElement.textContent = 'Error';
-        if (transactionList) transactionList.innerHTML = '<div class="error-message">Failed to load transactions</div>';
-        if (assetList) assetList.innerHTML = '<div class="error-message">Failed to load assets</div>';
+        if (transactionList) transactionList.textContent = '<div class="error-message">Failed to load transactions</div>';
+        if (assetList) assetList.textContent = '<div class="error-message">Failed to load assets</div>';
     }
 
     formatTimeAgo(timestamp) {
@@ -4888,7 +4889,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             const existingContent = daoContent.innerHTML;
             // Add guest notice if not already present
             if (!existingContent.includes('guest-notice')) {
-                daoContent.innerHTML = `
+                daoContent.textContent = `
                     <div class="guest-notice" style="background: rgba(255, 193, 7, 0.1); border: 1px solid #ffc107; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
                         <h4 style="margin: 0 0 8px 0; color: #ffc107;"> Guest Access</h4>
                         <p style="margin: 0; font-size: 14px;">You're viewing the DAO as a guest. <a href="#" onclick="showSignIn()" style="color: #00d4ff;">Sign in</a> to participate in governance and voting.</p>
@@ -4902,7 +4903,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
     showDaoSignInPrompt() {
         const pageContent = document.getElementById('pageContent');
         if (pageContent) {
-            pageContent.innerHTML = `
+            pageContent.textContent = `
                 <div class="dao-signin-prompt">
                     <div class="signin-card">
                         <h2>🏛️ Citizenship Required</h2>
@@ -5028,7 +5029,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         }
         
         if (!proposals || proposals.length === 0) {
-            proposalsList.innerHTML = '<div class="no-proposals">No active proposals found</div>';
+            proposalsList.textContent = '<div class="no-proposals">No active proposals found</div>';
             return;
         }
 
@@ -5076,7 +5077,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         `;
         }).join('');
 
-        proposalsList.innerHTML = proposalsHtml;
+        proposalsList.textContent = proposalsHtml;
         console.log(' Proposals list updated with real blockchain data');
     }
 
@@ -5149,7 +5150,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                 </div>
             `).join('');
             
-            votingHistoryElement.innerHTML = historyHtml;
+            votingHistoryElement.textContent = historyHtml;
         }
     }
 
@@ -5161,7 +5162,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         if (daoHeader) {
             const identityInfo = daoHeader.querySelector('.identity-info') || document.createElement('div');
             identityInfo.className = 'identity-info';
-            identityInfo.innerHTML = `
+            identityInfo.textContent = `
                 <div class="citizen-status">
                     <h3>🏛️ ${this.currentIdentity.displayName}</h3>
                     <p class="citizen-did">${this.currentIdentity.did}</p>
@@ -5178,7 +5179,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
     showDaoError(message = 'Failed to load DAO data') {
         const daoContent = document.getElementById('daoContent');
         if (daoContent) {
-            daoContent.innerHTML = `
+            daoContent.textContent = `
                 <div class="dao-error" style="text-align: center; padding: 40px; background: rgba(255, 107, 107, 0.1); border: 1px solid #ff6b6b; border-radius: 10px; margin: 20px;">
                     <h3 style="color: #ff6b6b; margin-bottom: 15px;">❌ ${message}</h3>
                     <p style="color: #8a9ba8; margin-bottom: 20px;">Unable to connect to the DAO governance system. Please try again.</p>
@@ -5192,7 +5193,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             // Fallback to page content if DAO content not found
             const pageContent = document.getElementById('pageContent');
             if (pageContent) {
-                pageContent.innerHTML = `
+                pageContent.textContent = `
                     <div class="dao-error" style="text-align: center; padding: 40px;">
                         <h2>❌ ${message}</h2>
                         <p>Unable to connect to the DAO governance system.</p>
@@ -5611,7 +5612,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                 
                 const proposalsElement = document.getElementById('dao-content');
                 if (proposalsElement) {
-                    proposalsElement.innerHTML = `
+                    proposalsElement.textContent = `
                         <h3> DAO Proposals</h3>
                         <div class="proposals-container">
                             ${proposalsHtml || '<p>No proposals found</p>'}
@@ -5727,7 +5728,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>💰 Propose Treasury Spending</h3>
@@ -5856,7 +5857,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                 
                 const delegatesElement = document.getElementById('dao-content');
                 if (delegatesElement) {
-                    delegatesElement.innerHTML = `
+                    delegatesElement.textContent = `
                         <h3>🤝 DAO Delegates</h3>
                         <div class="delegates-container">
                             <div class="delegate-actions-bar">
@@ -5889,7 +5890,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>${modalTitle}</h3>
@@ -5994,7 +5995,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             // Show loading state
             const daoContent = document.getElementById('daoContent');
             if (daoContent) {
-                daoContent.innerHTML = `
+                daoContent.textContent = `
                     <div class="loading-state" style="text-align: center; padding: 40px;">
                         <div class="loading-spinner" style="margin: 0 auto 20px; width: 40px; height: 40px; border: 3px solid #333; border-top: 3px solid #00d4ff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
                         <p>Loading treasury data...</p>
@@ -6056,7 +6057,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
 
                 const treasuryElement = document.getElementById('daoContent');
                 if (treasuryElement) {
-                    treasuryElement.innerHTML = `
+                    treasuryElement.textContent = `
                         <div class="treasury-section">
                             <h3>💰 DAO Treasury</h3>
                             <div class="treasury-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0;">
@@ -6123,7 +6124,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             // Show loading state
             const daoContent = document.getElementById('daoContent');
             if (daoContent) {
-                daoContent.innerHTML = `
+                daoContent.textContent = `
                     <div class="loading-state" style="text-align: center; padding: 40px;">
                         <div class="loading-spinner" style="margin: 0 auto 20px; width: 40px; height: 40px; border: 3px solid #333; border-top: 3px solid #00d4ff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
                         <p>Loading delegates...</p>
@@ -6213,7 +6214,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                 
                 const delegatesElement = document.getElementById('daoContent');
                 if (delegatesElement) {
-                    delegatesElement.innerHTML = `
+                    delegatesElement.textContent = `
                         <div class="delegates-section">
                             <h3>👥 DAO Delegates</h3>
                             <div class="voting-info" style="background: rgba(0, 212, 255, 0.1); border: 1px solid #00d4ff; border-radius: 8px; padding: 15px; margin: 20px 0;">
@@ -6343,7 +6344,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             // Show loading state
             const daoContent = document.getElementById('daoContent');
             if (daoContent) {
-                daoContent.innerHTML = `
+                daoContent.textContent = `
                     <div class="loading-state" style="text-align: center; padding: 40px;">
                         <div class="loading-spinner" style="margin: 0 auto 20px; width: 40px; height: 40px; border: 3px solid #333; border-top: 3px solid #00d4ff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
                         <p>Loading proposals...</p>
@@ -6397,7 +6398,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         if (!daoContent) return;
 
         if (proposals.length === 0) {
-            daoContent.innerHTML = `
+            daoContent.textContent = `
                 <div class="proposals-section">
                     <h3>🗳️ Active Proposals</h3>
                     <div class="empty-state">
@@ -6453,7 +6454,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             `;
         }).join('');
 
-        daoContent.innerHTML = `
+        daoContent.textContent = `
             <div class="proposals-section">
                 <div class="section-header">
                     <h3>🗳️ Active Proposals</h3>
@@ -6483,7 +6484,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             if (proposalElement) {
                 const actions = proposalElement.querySelector('.proposal-actions');
                 if (actions) {
-                    actions.innerHTML = '<div class="loading-spinner">Submitting vote...</div>';
+                    actions.textContent = '<div class="loading-spinner">Submitting vote...</div>';
                 }
             }
             
@@ -6518,7 +6519,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         
         const actions = proposalElement.querySelector('.proposal-actions');
         if (actions) {
-            actions.innerHTML = `
+            actions.textContent = `
                 ${this.currentIdentity ? `
                     <button class="vote-btn yes" onclick="voteYes('${proposalId}')">👍 Vote Yes</button>
                     <button class="vote-btn no" onclick="voteNo('${proposalId}')">👎 Vote No</button>
@@ -6538,7 +6539,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             // In production, this would fetch detailed proposal data
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
-            modal.innerHTML = `
+            modal.textContent = `
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Proposal Details: ${proposalId}</h2>
@@ -6560,7 +6561,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             
             const modalBody = modal.querySelector('.modal-body');
             if (proposalData) {
-                modalBody.innerHTML = `
+                modalBody.textContent = `
                     <div class="proposal-details">
                         <h3>${proposalData.title || proposalId}</h3>
                         <p><strong>Proposer:</strong> ${proposalData.proposer || 'Unknown'}</p>
@@ -6576,7 +6577,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                     </div>
                 `;
             } else {
-                modalBody.innerHTML = `
+                modalBody.textContent = `
                     <div class="proposal-details">
                         <h3>Proposal: ${proposalId}</h3>
                         <p>Detailed proposal information is not available at this time.</p>
@@ -6597,7 +6598,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         // Show a modal with delegate information
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Delegate Profile</h2>
@@ -6625,7 +6626,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             }));
             
             const modalBody = modal.querySelector('.modal-body');
-            modalBody.innerHTML = `
+            modalBody.textContent = `
                 <div class="delegate-profile">
                     <h3>${delegateData.name || 'Unknown Delegate'}</h3>
                     <p><strong>DID:</strong> ${delegateData.did}</p>
@@ -6660,7 +6661,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         } catch (error) {
             console.error('❌ Error loading delegate profile:', error);
             const modalBody = modal.querySelector('.modal-body');
-            modalBody.innerHTML = `
+            modalBody.textContent = `
                 <div style="text-align: center; padding: 20px;">
                     <p>❌ Failed to load delegate profile</p>
                     <button onclick="this.closest('.modal-overlay').remove();" class="btn-secondary">Close</button>
@@ -6690,7 +6691,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             const proposalsList = document.getElementById('proposalsList');
             if (proposalsList) {
                 if (!proposalsData.proposals || proposalsData.proposals.length === 0) {
-                    proposalsList.innerHTML = `
+                    proposalsList.textContent = `
                         <div class="empty-state" style="text-align: center; padding: 40px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; margin: 20px 0;">
                             <h4 style="color: #8a9ba8; margin-bottom: 10px;">No Active Proposals</h4>
                             <p style="color: #8a9ba8;">No proposals are currently active for voting.</p>
@@ -6699,7 +6700,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                     `;
                 } else {
                     // Render proposals here if any exist
-                    proposalsList.innerHTML = proposalsData.proposals.map(proposal => `
+                    proposalsList.textContent = proposalsData.proposals.map(proposal => `
                         <div class="proposal-item">
                             <h4>${proposal.title}</h4>
                             <p>${proposal.description}</p>
@@ -6779,7 +6780,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         // Update treasury transactions
         const treasuryTransactions = document.getElementById('treasuryTransactions');
         if (treasuryTransactions) {
-            treasuryTransactions.innerHTML = `
+            treasuryTransactions.textContent = `
                 <div class="empty-state" style="text-align: center; padding: 40px; background: rgba(255, 255, 255, 0.03); border-radius: 10px;">
                     <h4 style="color: #8a9ba8; margin-bottom: 10px;">Recent Treasury Activity</h4>
                     <p style="color: #8a9ba8;">Treasury transactions will appear here as they occur.</p>
@@ -6865,13 +6866,13 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                 
                 // If no delegate items exist, add them after the overview
                 if (!existingContent.includes('delegate-item')) {
-                    delegatesSection.innerHTML = existingContent + `
+                    delegatesSection.textContent = existingContent + `
                         <div class="delegates-list" style="margin-top: 20px;">
                             ${delegatesHtml}
                         </div>
                     `;
                 } else {
-                    delegatesSection.innerHTML = updatedContent;
+                    delegatesSection.textContent = updatedContent;
                 }
             }
             
@@ -6918,7 +6919,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Become a Delegate</h2>
@@ -7015,7 +7016,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             // Show loading state
             const daoContent = document.getElementById('daoContent');
             if (daoContent) {
-                daoContent.innerHTML = `
+                daoContent.textContent = `
                     <div class="loading-state" style="text-align: center; padding: 40px;">
                         <div class="loading-spinner" style="margin: 0 auto 20px; width: 40px; height: 40px; border: 3px solid #333; border-top: 3px solid #00d4ff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
                         <p>Loading treasury history...</p>
@@ -7093,7 +7094,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                 
                 const daoElement = document.getElementById('daoContent');
                 if (daoElement) {
-                    daoElement.innerHTML = `
+                    daoElement.textContent = `
                         <div class="treasury-history-section">
                             <h3>📊 Treasury Transaction History</h3>
                             <div class="history-controls" style="display: flex; gap: 15px; margin: 20px 0;">
@@ -7126,7 +7127,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>💸 Propose Treasury Spending</h2>
@@ -7284,7 +7285,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
                 
                 const treasuryElement = document.getElementById('dao-content');
                 if (treasuryElement) {
-                    treasuryElement.innerHTML = `
+                    treasuryElement.textContent = `
                         <h3>📊 Treasury Transaction History</h3>
                         <div class="history-controls">
                             <button onclick="browser.loadDaoTreasury()" class="btn-secondary">← Back to Treasury</button>
@@ -7310,7 +7311,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>👤 Become a Delegate</h3>
@@ -7368,7 +7369,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
     showProposalModal(proposal) {
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal proposal-modal">
                 <div class="modal-header">
                     <h2>${proposal.title}</h2>
@@ -7424,7 +7425,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
             visibility: visible !important;
             opacity: 1 !important;
         `;
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal create-proposal-modal" style="
                 background: #1a1a1a !important;
                 border: 2px solid #00d4ff !important;
@@ -7648,7 +7649,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
     showVoteDelegationModal() {
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal delegation-modal">
                 <div class="modal-header">
                     <h2>🗳️ Vote Delegation</h2>
@@ -7685,7 +7686,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
     showTreasuryModal() {
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal treasury-modal">
                 <div class="modal-header">
                     <h2>🏛️ DAO Treasury</h2>
@@ -7766,7 +7767,7 @@ ${contractContent.metadata?.availableFiles?.join('\n') || 'No files available'}
         
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
+        modal.textContent = `
             <div class="modal" style="max-width: 700px;">
                 <div class="modal-header">
                     <h2>🛡️ Treasury Protection Safeguards</h2>
@@ -8528,7 +8529,8 @@ async function recoverFromSeed(seedPhrase) {
                 };
                 
                 // Save to localStorage
-                localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
+                // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
                 
                 // Update UI
                 window.browser.updateIdentityIndicator();
@@ -8641,7 +8643,8 @@ async function recoverFromBackup(file) {
                 };
                 
                 // Save to localStorage
-                localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
+                // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
                 
                 // Update UI
                 window.browser.updateIdentityIndicator();
@@ -8739,7 +8742,8 @@ async function recoverFromSocial(guardianCode) {
                 };
                 
                 // Save to localStorage
-                localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
+                // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
                 
                 // Update UI
                 window.browser.updateIdentityIndicator();
@@ -9049,7 +9053,8 @@ function saveSettings() {
         debugMode: document.getElementById('debugMode').checked
     };
     
-    localStorage.setItem('zhtp-settings', JSON.stringify(settings));
+    // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp-settings', JSON.stringify(settings));
     window.browser?.showNotification('Settings saved successfully!', 'success');
 }
 
@@ -9236,7 +9241,7 @@ function sendMessage() {
     const messagesContainer = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
     messageElement.className = 'message sent';
-    messageElement.innerHTML = `
+    messageElement.textContent = `
         <div class="message-content">${message}</div>
         <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
     `;
@@ -9374,7 +9379,8 @@ async function signInWithZkDid() {
             };
             
             // Save identity to localStorage
-            localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
+            // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
             
             // Update the identity indicator immediately
             window.browser.updateIdentityIndicator();
@@ -9684,7 +9690,8 @@ async function createNewZkDid() {
             console.log('💰 Loading wallet data for new citizen...');
             
             // Save identity to localStorage
-            localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
+            // [FIX] Secure Storage wrapper required
+localStorage.setItem('zhtp-current-identity', JSON.stringify(window.browser.currentIdentity));
             
             // If the result includes citizenship benefits, use them
             if (identityData.citizen_benefits) {
@@ -9915,7 +9922,7 @@ async function loadDaoProposals() {
             
             const proposalsElement = document.getElementById('dao-content');
             if (proposalsElement) {
-                proposalsElement.innerHTML = `
+                proposalsElement.textContent = `
                     <h3> DAO Proposals</h3>
                     <div class="proposals-container">
                         ${proposalsHtml || '<p>No proposals found</p>'}
@@ -9948,7 +9955,7 @@ async function loadDaoTreasury() {
         if (data.success) {
             const treasuryElement = document.getElementById('dao-content');
             if (treasuryElement) {
-                treasuryElement.innerHTML = `
+                treasuryElement.textContent = `
                     <h3>💰 DAO Treasury</h3>
                     <div class="treasury-stats">
                         <div class="stat-card">
@@ -10015,7 +10022,7 @@ async function loadDaoDelegates() {
             
             const delegatesElement = document.getElementById('dao-content');
             if (delegatesElement) {
-                delegatesElement.innerHTML = `
+                delegatesElement.textContent = `
                     <h3>👥 DAO Delegates</h3>
                     <div class="delegates-container">
                         ${delegatesHtml || '<p>No delegates found</p>'}
@@ -10227,7 +10234,7 @@ function updateTransactionDisplay(walletType, transactions) {
     }
     
     if (transactions.length === 0) {
-        transactionList.innerHTML = `
+        transactionList.textContent = `
             <div class="transaction-item">
                 <div class="transaction-info">
                     <div class="transaction-title">No transactions yet</div>
@@ -10251,7 +10258,7 @@ function updateTransactionDisplay(walletType, transactions) {
         </div>
     `).join('');
     
-    transactionList.innerHTML = transactionHtml;
+    transactionList.textContent = transactionHtml;
 }
 
 function updateAssetDisplay(walletType, assets) {
@@ -10275,7 +10282,7 @@ function updateAssetDisplay(walletType, assets) {
         </div>
     `).join('');
     
-    assetList.innerHTML = assetHtml;
+    assetList.textContent = assetHtml;
 }
 
 function formatTransactionDate(timestamp) {
@@ -10306,7 +10313,7 @@ async function transferBetweenWallets(fromWallet) {
     
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    modal.innerHTML = `
+    modal.textContent = `
         <div class="modal-content">
             <div class="modal-header">
                 <h3>🔀 Transfer Between Wallets</h3>
@@ -10580,7 +10587,7 @@ async function sendTokens() {
 
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    modal.innerHTML = `
+    modal.textContent = `
         <div class="modal-content">
             <div class="modal-header">
                 <h3>📤 Send ZHTP Tokens</h3>
@@ -10662,7 +10669,7 @@ async function receiveTokens() {
 
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    modal.innerHTML = `
+    modal.textContent = `
         <div class="modal-content">
             <div class="modal-header">
                 <h3>📥 Receive ZHTP Tokens</h3>
@@ -10719,7 +10726,7 @@ async function swapTokens() {
 
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    modal.innerHTML = `
+    modal.textContent = `
         <div class="modal-content">
             <div class="modal-header">
                 <h3> Swap Tokens</h3>
@@ -10836,7 +10843,7 @@ async function stakeTokens() {
 
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    modal.innerHTML = `
+    modal.textContent = `
         <div class="modal-content">
             <div class="modal-header">
                 <h3>🏦 Stake ZHTP Tokens</h3>
@@ -11314,7 +11321,7 @@ window.switchDaoTab = function(tabName) {
         // Show loading content
         const daoContent = document.getElementById('dao-content');
         if (daoContent) {
-            daoContent.innerHTML = `
+            daoContent.textContent = `
                 <div class="loading-state">
                     <div class="loading-spinner"></div>
                     <p>Loading ${tabName} data...</p>
