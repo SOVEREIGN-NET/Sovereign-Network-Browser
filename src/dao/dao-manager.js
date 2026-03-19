@@ -180,7 +180,7 @@ export class DaoManager {
     }
 
     generateProposalId() {
-        return 'prop_' + Math.random().toString(36).substr(2, 16) + Date.now().toString(36);
+        return 'prop_' + (crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296).toString(36).substr(2, 16) + Date.now().toString(36);
     }
 
     async vote(proposalId, voteChoice, voterDid) {
