@@ -492,7 +492,7 @@ class ZkCryptoUtils {
     }
 
     async generateQuantumKeyPair() {
-        console.log('🔑 Generating quantum-resistant key pair...');
+        // [AUDIT] Sensitive log removed
         
         try {
             // In production, this would use CRYSTALS-Dilithium
