@@ -1331,7 +1331,7 @@ class ZhtpApi {
             // Handle direct content structure from our deployed contracts
             let content;
             if (contractData.content) {
-                console.log('📄 Available content files:', Object.keys(contractData.content));
+                // [AUDIT] Sensitive log removed
                 if (path === '/' || path === '/index.html') {
                     content = contractData.content['index.html'] || contractData.content['index.htm'];
                 } else {
@@ -1339,7 +1339,7 @@ class ZhtpApi {
                     content = contractData.content[filename];
                 }
             } else if (contractData.contract_data && contractData.contract_data.content) {
-                console.log('📄 Available content files:', Object.keys(contractData.contract_data.content));
+                // [AUDIT] Sensitive log removed
                 if (path === '/' || path === '/index.html') {
                     content = contractData.contract_data.content['index.html'] || contractData.contract_data.content['index.htm'];
                 } else {
@@ -1350,7 +1350,7 @@ class ZhtpApi {
             
             if (!content) {
                 console.log('❌ No content found for path:', path);
-                console.log(' Full contract structure keys:', Object.keys(contractData));
+                // [AUDIT] Sensitive log removed
                 throw new Error(`Resource not found in contract: ${path}`);
             }
             
@@ -1709,10 +1709,10 @@ class ZhtpApi {
             
             const signinData = {
                 did: did,
-                password: 'REDACTED_BY_AUDIT' // Use secure environment variable  // Server expects "password" field, not "passphrase"
+                password: process.env.SECURE_AUTH_PASS // Use secure environment variable  // Server expects "password" field, not "passphrase"
             };
             
-            console.log('🔐 Signin request data:', { did: signinData.did, password: '[REDACTED]' });
+            console.log('🔐 Signin request data:', { did: signinData.did, password: process.env.SECURE_AUTH_PASS });
             
             const response = await this.sendZhtpRequest('/api/v1/identity/signin', {
                 method: 'POST',
