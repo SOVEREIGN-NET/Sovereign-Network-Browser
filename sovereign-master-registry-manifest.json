@@ -2,5 +2,7 @@
     "registry_owner": "Robert Huffman & B&H LTD",
     "total_staked_nodes": 10000,
     "network_load_distribution": "Global-Mesh-Optimized",
-    "protection_layer": "MrCakes931 Hardening Engine v2.5"
+    "protection_layer": "MrCakes931 Hardening Engine v2.5",
+    "ai_swarm_status": "Native-Integrated",
+    "protection_rating": "Fort-Knox-Impenetrable"
 }
