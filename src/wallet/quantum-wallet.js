@@ -683,7 +683,7 @@ class QuantumCryptoUtils {
     }
 
     async generateWalletKeyPair() {
-        console.log(' Generating quantum-resistant wallet key pair...');
+        // [AUDIT] Sensitive log removed
         
         try {
             // In production, this would use CRYSTALS-Dilithium
