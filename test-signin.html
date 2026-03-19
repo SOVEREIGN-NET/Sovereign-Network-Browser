@@ -133,7 +133,7 @@
         }
         
         function showStatus(message, type = 'info') {
-            statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+            statusContainer.textContent = `<div class="status ${type}">${message}</div>`;
         }
         
         async function makeRequest(path, method = 'GET', body = null) {
