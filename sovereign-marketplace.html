@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Sovereign Marketplace | MrCakes931 Registrar</title>
+    <style>
+        :root { --neon-blue: #00d4ff; --neon-green: #00ff99; --dark-bg: #0a0b10; }
+        body { background: var(--dark-bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .domain-card { background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 10px; transition: 0.3s; }
+        .domain-card:hover { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0,255,153,0.2); }
+        .status-tag { font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; background: rgba(0,255,153,0.1); color: var(--neon-green); }
+        .price { color: var(--neon-blue); font-weight: bold; font-size: 1.2rem; margin: 15px 0; }
+        .btn-buy { width: 100%; padding: 10px; background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .btn-buy:hover { background: var(--neon-blue); color: #000; }
+    </style>
+</head>
+<body>
+    <div class='header'>
+        <h1>🌐 Sovereign Domain Marketplace</h1>
+        <div>Registry Owner: <b>Robert Huffman / B&H LTD</b></div>
+    </div>
+    <div class='grid' id='domainGrid'>
+        <!-- Dynamically populated from sovereign-domain-catalog.json -->
+    </div>
+    <script>
+        // Simulation of the Registry logic
+        async function loadDomains() {
+            const grid = document.getElementById('domainGrid');
+            // In a real Web4 app, this would fetch from the zkDHT
+            for(let i=0; i<12; i++) {
+                const card = document.createElement('div');
+                card.className = 'domain-card';
+                card.innerHTML = `
+                    <span class='status-tag'>AUDITED: MrCakes931 v2.5</span>
+                    <h3>zone-${Math.random().toString(16).slice(2,10)}.mrcakes.sovereign</h3>
+                    <p>Status: Pre-Staked & Hardened</p>
+                    <div class='price'>0.05 SOV / Month</div>
+                    <button class='btn-buy' onclick="alert('Initializing Secure Handshake...')">LEASE DOMAIN</button>
+                `;
+                grid.appendChild(card);
+            }
+        }
+        loadDomains();
+    </script>
+</body>
+</html>
