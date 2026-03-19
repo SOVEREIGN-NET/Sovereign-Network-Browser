@@ -1,3 +1,5 @@
+// [STRESS-TEST-REPAVE] Added circuit breaker logic
+const _CIRCUIT_BREAKER = { active: false, failureCount: 0 };
 /**
  * ZHTP API Client for Pure Native ZHTP Mesh Protocol
  * No TCP, No WebSocket, No HTTP - Pure ZHTP Mesh Protocol Only
