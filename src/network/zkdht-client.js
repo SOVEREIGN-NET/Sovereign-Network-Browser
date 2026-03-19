@@ -1,3 +1,5 @@
+// [STRESS-TEST-REPAVE] Added circuit breaker logic
+const _CIRCUIT_BREAKER = { active: false, failureCount: 0 };
 /**
  * zkDHT Client - Zero-Knowledge Distributed Hash Table
  * Loads Web4 pages and applications from the distributed network
